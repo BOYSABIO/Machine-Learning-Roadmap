@@ -49,7 +49,7 @@ while True:
         # Still need to look into savings and how much should be allocated
         savings = total * 0.2
         remainder = round(((total - (total_food + subscriptions_total + savings))), 2)
-        fun = round((remainder * 0.2),2)
+        fun = round((remainder * 0.2), 2)
         allocation = remainder - fun
         
         if investment_style == "safe":
