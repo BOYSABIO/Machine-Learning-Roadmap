@@ -3,76 +3,98 @@ from numpy import real
 import pandas as pd
 import calendar
 import datetime
+from tabulate import tabulate
 
-while True:
-    print("1 ---- General")
-    print("2 ---- Money Check")
-    print("3 ---- Rebalancing")
-    print("4 ---- Exit")
-    program = int(input("Please indicate: "))
-    if program == 1:
-        print("Starting General Program...")
-        print("---------------------------")
-        income = int(input("Enter income: "))
-        expense = int(input("Enter expense: "))
-        net = income - expense
+def general(income, expense):
+    net = income - expense
+    allowance = 600
+    check = input("Do you want to add allowance?: ")
+    if check == "yes":
+        total = net + allowance
+    else:
+        total = net
 
-        # Add allowance
-        allowance = 600
-        check = input("Do you want to add allowance?: ")
-        if check == "yes":
-            total = net + allowance
-        else:
-            total = net
-        
-        investment_style = input("Choose (safe) or (risky) investment style: ") #Choose conservative or risky style for rebalancing
+    grocery, fast_food, total_food, ff_days = basic_needs(total)
+    days_in_month = datecheck()
+
+    # initialize subscriptions
+    subscriptions_total = 0
+
+    investment_style = input("Choose (safe) or (risky) investment style: ") #Choose conservative or risky style for rebalancing
+    dict = finance(total, grocery, fast_food, total_food, subscriptions_total, investment_style)
     
-        # Initialize Basic Needs
-        grocery = (total * 0.075) * 4
-        fast_food = (total * 0.075) * 4
-        total_food = grocery + fast_food
-        ff_days = fast_food / 20
+    s = pd.Series(dict)
 
-        now = datetime.datetime.now()
-        month = now.month
-        year = now.year
-        days_in_month = calendar.monthrange(year,month)[1]
+    print('PORTIONING')
+    print('---------------------------')
+    print(s[0:4])
+    print('---------------------------')
+    print('SAVINGS / SUBS')
+    print('---------------------------')
+    print(s.iloc[4:8])
+    print('---------------------------')
+    print('INVESTING')
+    print('---------------------------')
+    print(s.iloc[8:15])
+    print('---------------------------')
+    print('FUN')
+    print('---------------------------')
+    print(s.iloc[15])
+    print('---------------------------')
 
-        # Initialize Subscribtions
-        capcut = 12 #This would be mitigated if the amount in savings reached 5,400
-        n26 = 14
-        linq = 15
-        # Splice
-        subscriptions_total = capcut
+    print()
+    print('---------------------------')
+    print("Extra Statistics:")
+    print('---------------------------')
+    print("Grocery amount per week: ", round((grocery / 4),2))
+    print("Grocery amount per day: ", round((grocery / days_in_month),3))
+    print('---------------------------')
+    print()
+    print('---------------------------')
+    print("Number of fast food deliveries under $20: ", round(ff_days))
+    print("Every ", round((days_in_month / ff_days),3) , "days, you can order 20€ fast food")
+    print('---------------------------')
+    print()
 
-        # Initialize Finance Variables
-        # Still need to look into savings and how much should be allocated
-        savings = total * 0.2
-        remainder = round(((total - (total_food + subscriptions_total + savings))), 2)
-        fun = round((remainder * 0.2), 2)
-        allocation = remainder - fun
+def basic_needs(total):
+    grocery = (total * 0.075) * 4
+    fast_food = (total * 0.075) * 4
+    total_food = grocery + fast_food
+    ff_days = fast_food / 20
+    return grocery, fast_food, total_food, ff_days
+
+def datecheck():
+    now = datetime.datetime.now()
+    month = now.month
+    year = now.year
+    days_in_month = calendar.monthrange(year,month)[1]
+    return days_in_month
+
+def finance(total, grocery, fast_food, total_food, subscriptions_total, investment_style):
+    savings = total * 0.2
+    remainder = round(((total - (total_food + subscriptions_total + savings))), 2)
+    fun = round((remainder * 0.2), 2)
+    allocation = remainder - fun
         
-        if investment_style == "safe":
-            stocks = round((allocation * 0.25), 2)
-            bonds = round((allocation * 0.40),2)
-            realestate = round((allocation * 0.1),2)
-            commodities = round((allocation * 0.1),2)
-            money_fund = round((allocation * 0.15))
-        else:
-            stocks = round((allocation * 0.4), 2)
-            bonds = round((allocation * 0.3), 2)
-            realestate = round((allocation * 0.1),2)
-            commodities = round((allocation * 0.15), 2)
-            money_fund = round((allocation * 0.05),2)
+    if investment_style == "safe":
+        stocks = round((allocation * 0.25), 2)
+        bonds = round((allocation * 0.40),2)
+        realestate = round((allocation * 0.1),2)
+        commodities = round((allocation * 0.1),2)
+        money_fund = round((allocation * 0.15))
+    else:
+        stocks = round((allocation * 0.4), 2)
+        bonds = round((allocation * 0.3), 2)
+        realestate = round((allocation * 0.1),2)
+        commodities = round((allocation * 0.15), 2)
+        money_fund = round((allocation * 0.05),2)
         
-        Saving = (savings / 3)
-        Roth_IRA = (savings / 3)
-        e_fund = (savings / 3)
-        schwab = Roth_IRA + stocks + bonds + realestate + commodities + money_fund
-        #fun = round((remainder - (stocks + bonds)), 2)
+    Saving = (savings / 3)
+    Roth_IRA = (savings / 3)
+    e_fund = (savings / 3)
+    schwab = Roth_IRA + stocks + bonds + realestate + commodities + money_fund
 
-        # Create & Print Dictionary
-        dict = {
+    dict = {
         "Income":total,
         "Grocery":grocery,
         "Fast_Food":fast_food,
@@ -90,18 +112,22 @@ while True:
         "Schwab Total":schwab,
         "Fun":fun
         }
+    
+    return dict
 
-        print(dict)
-        s = pd.Series(dict)
-        print(s)
 
-        print()
-        print("Extra Points:")
-        print("Grocery amount per week: ", round((grocery / 4),2))
-        print("Grocery amount per day: ", round((grocery / days_in_month),3))
-        print()
-        print("Number of fast food deliveries under $20: ", round(ff_days))
-        print("Every ", round((days_in_month / ff_days),3) , "days, you can order 20€ fast food")
+while True:
+    print("1 ---- General")
+    print("2 ---- Money Check")
+    print("3 ---- Rebalancing")
+    print("4 ---- Exit")
+    program = int(input("Please indicate: "))
+    if program == 1:
+        print("Starting General Program...")
+        print("---------------------------")
+        income = int(input("Enter income: "))
+        expense = int(input("Enter expense: "))
+        general(income, expense)
 
     elif program == 2:
         print("Starting Money Check...")
