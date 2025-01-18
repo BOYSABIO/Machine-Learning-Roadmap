@@ -1,0 +1,5 @@
+[
+    {"review_id": 1, "rating": 4, "comment": "Great product!"},
+    {"review_id": 2, "rating": 5, "comment": "Loved it!"},
+    {"review_id": 3, "rating": 3, "comment": "It was okay."}
+]
