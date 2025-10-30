@@ -23,8 +23,7 @@ Over time, every major topic will have both an educational notebook here and a l
 - Association Rule Learning: `MACHINE_LEARNING/UNSUPERVISED_LEARNING/03_ASSOCIATION_RULE_LEARNING/project` — Attack pattern discovery from co-occurring events
 - More topics will follow this same pattern: each main topic folder will contain a `project/` subfolder for the flagship.
 
-### Roadmap (tree)
-The following renders best as a code block on GitHub.
+### Roadmap
 
 ```
 Machine Learning
