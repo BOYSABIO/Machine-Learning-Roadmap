@@ -401,5 +401,3 @@ Machine Learning
 
 ### Project status
 Actively building. You’ll see topics gain: theory → notebook → linked production repo. If you want a specific topic prioritized, open an issue.
-
-Note on assets: `CSV`, `IMAGES`, and `JSON` folders have been moved to `unorganized/` since they are not referenced by any notebooks in the supervised or unsupervised learning folders. They remain available for `MACHINE_LEARNING/001_Datatypes.ipynb` (which may need path updates).
