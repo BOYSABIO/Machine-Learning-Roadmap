@@ -23,8 +23,7 @@ Over time, every major topic will have both an educational notebook here and a l
 - Association Rule Learning: `MACHINE_LEARNING/UNSUPERVISED_LEARNING/03_ASSOCIATION_RULE_LEARNING/project` — Attack pattern discovery from co-occurring events
 - More topics will follow this same pattern: each main topic folder will contain a `project/` subfolder for the flagship.
 
-### Roadmap (tree)
-The following renders best as a code block on GitHub.
+### Roadmap
 
 ```
 Machine Learning
@@ -401,5 +400,3 @@ Machine Learning
 
 ### Project status
 Actively building. You’ll see topics gain: theory → notebook → linked production repo. If you want a specific topic prioritized, open an issue.
-
-Note on assets: `CSV`, `IMAGES`, and `JSON` folders have been moved to `unorganized/` since they are not referenced by any notebooks in the supervised or unsupervised learning folders. They remain available for `MACHINE_LEARNING/001_Datatypes.ipynb` (which may need path updates).
